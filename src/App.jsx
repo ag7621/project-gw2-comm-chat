@@ -4,9 +4,51 @@ import './App.css';
 const initialData = [
   {
     wing: '1',
-    boss: 'sammy',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
+    bosses: [
+      {
+        boss: 'Sammy',
+        entries: [
+          {
+            id: 1,
+            description:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
+          },
+          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
+        ],
+      },
+      {
+        boss: 'Chess',
+        entries: [
+          {
+            id: 1,
+            description:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
+          },
+          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
+        ],
+      },
+    ],
+  },
+  {
+    wing: '2',
+    bosses: [
+      {
+        boss: 'Sab',
+        entries: [{ id: 1, description: 'Lorem ipsum dolor sit amet ' }],
+      },
+      {
+        boss: 'VB',
+        entries: [
+          {
+            id: 1,
+            description:
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
+          },
+          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
+          { id: 3, description: 'Lorem ipsum dolor sit' },
+        ],
+      },
+    ],
   },
 ];
 
@@ -15,7 +57,7 @@ function App() {
 
   const [wing, setWing] = useState('1');
   const [boss, setBoss] = useState('');
-  const [description, setDescription] = useState('');
+  const [entries, setEntries] = useState('');
 
   function handleAddEncounter(item) {
     console.log('adding: ', item);
@@ -28,16 +70,16 @@ function App() {
     const newEncounter = {
       wing,
       boss,
-      description,
+      entries,
     };
 
     console.log(wing);
     console.log(boss);
-    console.log(description);
+    console.log(entries);
 
     handleAddEncounter(newEncounter);
     setBoss('');
-    setDescription('');
+    setEntries('');
   }
 
   useEffect(() => {
@@ -50,19 +92,21 @@ function App() {
   return (
     <div>
       <h1>GW2 Comm Buddy 🦦</h1>
-      <div>
-        <ul>
-          {data.map((item) => {
-            return (
-              <li>
-                <h2>wing: {item.wing}</h2>
-                <h3>boss: {item.boss}</h3>
-                <p>{item.description}</p>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <ul>
+        {data.map((wing) => (
+          <li key={wing.wing}>
+            <h2>Wing {wing.wing}</h2>
+            {wing.bosses.map((boss) => (
+              <div key={boss.boss}>
+                <h3>{boss.boss}</h3>
+                {boss.entries.map((entry) => (
+                  <p key={entry.id}>{entry.description}</p>
+                ))}
+              </div>
+            ))}
+          </li>
+        ))}
+      </ul>
       <form onSubmit={handleSubmit}>
         <label>Wing: </label>
         <select onChange={(e) => setWing(e.target.value)}>
@@ -86,8 +130,8 @@ function App() {
         <label>Input</label>
         <input
           type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={entries}
+          onChange={(e) => setEntries(e.target.value)}
         />
 
         <button>Add</button>
