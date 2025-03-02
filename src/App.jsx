@@ -1,52 +1,29 @@
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 
 const initialData = [
   {
-    wing: '1',
-    bosses: [
+    name: 'sammy',
+    entries: [
       {
-        boss: 'Sammy',
-        entries: [
-          {
-            id: 1,
-            description:
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
-          },
-          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
-        ],
+        id: 1,
+        entry:
+          'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil, corporis',
       },
       {
-        boss: 'Chess',
-        entries: [
-          {
-            id: 1,
-            description:
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
-          },
-          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
-        ],
+        id: 2,
+        entry:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit, ratione molestiae mollitia illum minima recusandae?',
       },
     ],
   },
   {
-    wing: '2',
-    bosses: [
+    name: 'sab',
+    entries: [
       {
-        boss: 'Sab',
-        entries: [{ id: 1, description: 'Lorem ipsum dolor sit amet ' }],
-      },
-      {
-        boss: 'VB',
-        entries: [
-          {
-            id: 1,
-            description:
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, deserunt?',
-          },
-          { id: 2, description: 'Lorem ipsum dolor sit amet consectetur' },
-          { id: 3, description: 'Lorem ipsum dolor sit' },
-        ],
+        id: 3,
+        entry: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit.',
       },
     ],
   },
@@ -55,31 +32,27 @@ const initialData = [
 function App() {
   const [data, setData] = useState(initialData);
 
-  const [wing, setWing] = useState('1');
-  const [boss, setBoss] = useState('');
-  const [entries, setEntries] = useState('');
-
-  function handleAddEncounter(item) {
-    console.log('adding: ', item);
-    setData((prevItems) => [...prevItems, item]);
-  }
+  const [selectedBoss, setSelectedBoss] = useState('sammy');
+  const [newEntry, setNewEntry] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newEncounter = {
-      wing,
-      boss,
-      entries,
-    };
+    const newId = uuidv4();
+    console.log(newId);
+    console.log(selectedBoss);
+    console.log(newEntry);
 
-    console.log(wing);
-    console.log(boss);
-    console.log(entries);
-
-    handleAddEncounter(newEncounter);
-    setBoss('');
-    setEntries('');
+    setData((prevData) =>
+      prevData.map((boss) =>
+        boss.name === selectedBoss
+          ? {
+              ...boss,
+              entries: [...boss.entries, { id: newId, entry: newEntry }],
+            }
+          : boss
+      )
+    );
   }
 
   useEffect(() => {
@@ -92,46 +65,36 @@ function App() {
   return (
     <div>
       <h1>GW2 Comm Buddy 🦦</h1>
+
       <ul>
-        {data.map((wing) => (
-          <li key={wing.wing}>
-            <h2>Wing {wing.wing}</h2>
-            {wing.bosses.map((boss) => (
-              <div key={boss.boss}>
-                <h3>{boss.boss}</h3>
-                {boss.entries.map((entry) => (
-                  <p key={entry.id}>{entry.description}</p>
-                ))}
-              </div>
+        {data.map((boss) => (
+          <li key={boss.name}>
+            <h2>{boss.name}</h2>
+            {boss.entries.map((entry) => (
+              <p key={entry.id}>{entry.entry}</p>
             ))}
           </li>
         ))}
       </ul>
+
+      <hr />
+
       <form onSubmit={handleSubmit}>
-        <label>Wing: </label>
-        <select onChange={(e) => setWing(e.target.value)}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-        </select>
+        <h2>
+          info to be entered: {selectedBoss} - {newEntry}
+        </h2>
 
         <label>Boss: </label>
-        <input
-          type="text"
-          value={boss}
-          onChange={(e) => setBoss(e.target.value)}
-        />
+        <select onChange={(e) => setSelectedBoss(e.target.value)}>
+          <option value="sammy">sammy</option>
+          <option value="sab">sab</option>
+        </select>
 
-        <label>Input</label>
+        <label>Entry: </label>
         <input
           type="text"
-          value={entries}
-          onChange={(e) => setEntries(e.target.value)}
+          value={newEntry}
+          onChange={(e) => setNewEntry(e.target.value)}
         />
 
         <button>Add</button>
