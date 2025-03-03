@@ -2,35 +2,14 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 
-const initialData = [
-  {
-    name: 'sammy',
-    entries: [
-      {
-        id: 1,
-        entry:
-          'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil, corporis',
-      },
-      {
-        id: 2,
-        entry:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit, ratione molestiae mollitia illum minima recusandae?',
-      },
-    ],
-  },
-  {
-    name: 'sab',
-    entries: [
-      {
-        id: 3,
-        entry: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit.',
-      },
-    ],
-  },
+const bosses = [
+  { name: 'sammy', entries: [] },
+  { name: 'sab', entries: [] },
+  { name: 'gor', entries: [] },
 ];
 
 function App() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(bosses);
 
   const [selectedBoss, setSelectedBoss] = useState('sammy');
   const [newEntry, setNewEntry] = useState('');
@@ -86,8 +65,11 @@ function App() {
 
         <label>Boss: </label>
         <select onChange={(e) => setSelectedBoss(e.target.value)}>
-          <option value="sammy">sammy</option>
-          <option value="sab">sab</option>
+          {data.map((boss) => (
+            <option key={boss.name} value={boss.name}>
+              {boss.name}
+            </option>
+          ))}
         </select>
 
         <label>Entry: </label>
