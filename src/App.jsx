@@ -1,38 +1,10 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
-
-const bosses = [
-  { name: 'Vale Guardian', entries: [] },
-  { name: 'Spirit Woods', entries: [] },
-  { name: 'Gorseval', entries: [] },
-  { name: 'Sabetha', entries: [] },
-  { name: 'Slothasor', entries: [] },
-  { name: 'Bandit Trio', entries: [] },
-  { name: 'Matthias', entries: [] },
-  { name: 'Escort', entries: [] },
-  { name: 'Keep Construct', entries: [] },
-  { name: 'Twisted Castle', entries: [] },
-  { name: 'Xera', entries: [] },
-  { name: 'Cairn', entries: [] },
-  { name: 'Mursaat Overseer', entries: [] },
-  { name: 'Samarog', entries: [] },
-  { name: 'Deimos', entries: [] },
-  { name: 'Soulless Horror', entries: [] },
-  { name: 'River of Souls', entries: [] },
-  { name: 'Statues of Grenth', entries: [] },
-  { name: 'Dhuum', entries: [] },
-  { name: 'Conjured Amalgamate', entries: [] },
-  { name: 'Twin Largos', entries: [] },
-  { name: 'Qadim', entries: [] },
-  { name: 'Gate of Ahdashim', entries: [] },
-  { name: 'Cardinal Adina', entries: [] },
-  { name: 'Cardinal Sabir', entries: [] },
-  { name: 'Qadim the Peerless', entries: [] },
-];
+import bossArray from './Data';
 
 function App() {
-  const [data, setData] = useState(bosses);
+  const [data, setData] = useState(bossArray);
 
   const [selectedBoss, setSelectedBoss] = useState('Vale Guardian');
   const [newEntry, setNewEntry] = useState('');
@@ -64,6 +36,10 @@ function App() {
     setNewEntry(e.target.value);
   }
 
+  function handleDelete(entry) {
+    console.log(entry);
+  }
+
   // useEffect(() => {
   //   console.log('data change: ', data);
   //   data.forEach((item) => {
@@ -83,6 +59,7 @@ function App() {
               {boss.entries.map((entry) => (
                 <p key={entry.id}>{entry.entry}</p>
               ))}
+              <button>Delete</button>
             </li>
           ) : null
         )}
