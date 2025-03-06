@@ -36,8 +36,18 @@ function App() {
     setNewEntry(e.target.value);
   }
 
-  function handleDelete(entry) {
-    console.log(entry);
+  function handleDelete(entryId, bossName) {
+    // console.log(entry);
+    setData((prevData) =>
+      prevData.map((boss) =>
+        boss.name === bossName
+          ? {
+              ...boss,
+              entries: boss.entries.filter((entry) => entry.id !== entryId),
+            }
+          : boss
+      )
+    );
   }
 
   // useEffect(() => {
@@ -57,9 +67,13 @@ function App() {
             <li key={boss.name}>
               <h2>{boss.name}</h2>
               {boss.entries.map((entry) => (
-                <p key={entry.id}>{entry.entry}</p>
+                <div key={entry.id}>
+                  <p>{entry.entry}</p>
+                  <button onClick={() => handleDelete(entry.id, boss.name)}>
+                    Delete
+                  </button>
+                </div>
               ))}
-              <button>Delete</button>
             </li>
           ) : null
         )}
