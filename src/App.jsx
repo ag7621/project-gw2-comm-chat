@@ -10,6 +10,10 @@ function App() {
   const [newEntry, setNewEntry] = useState('');
   const [count, setCount] = useState(0);
 
+  const [filteredList, setFilteredList] = useState('Vale Guardian');
+
+  const [copied, setCopied] = useState(false);
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -36,8 +40,14 @@ function App() {
     setNewEntry(e.target.value);
   }
 
+  function handleCopyText(text) {
+    navigator.clipboard.writeText(text);
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   function handleDelete(entryId, bossName) {
-    // console.log(entry);
     setData((prevData) =>
       prevData.map((boss) =>
         boss.name === bossName
@@ -58,26 +68,37 @@ function App() {
   // }, [data]);
 
   return (
-    <div>
+    <div className="container">
       <h1>GW2 Comm Buddy 🦦</h1>
 
-      <ul>
+      <select onChange={(e) => setFilteredList(e.target.value)}>
+        {data.map((boss) => (
+          <option key={boss.name} value={boss.name}>
+            {boss.name}
+          </option>
+        ))}
+      </select>
+
+      <div className="list-container">
         {data.map((boss) =>
           boss.entries.length > 0 ? (
-            <li key={boss.name}>
+            <ol key={boss.name}>
               <h2>{boss.name}</h2>
               {boss.entries.map((entry) => (
-                <div key={entry.id}>
+                <li key={entry.id}>
                   <p>{entry.entry}</p>
                   <button onClick={() => handleDelete(entry.id, boss.name)}>
                     Delete
                   </button>
-                </div>
+                  <button onClick={() => handleCopyText(entry.entry)}>
+                    {copied ? 'Copied!' : 'Copy text'}
+                  </button>
+                </li>
               ))}
-            </li>
+            </ol>
           ) : null
         )}
-      </ul>
+      </div>
 
       <hr />
 
@@ -94,13 +115,10 @@ function App() {
             </option>
           ))}
         </select>
+
         <br />
+
         <label>Entry: </label>
-        {/* <input
-          type="text"
-          value={newEntry}
-          onChange={(e) => setNewEntry(e.target.value)}
-        /> */}
         <textarea
           rows={4}
           cols={50}

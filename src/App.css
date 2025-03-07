@@ -44,3 +44,12 @@
 textarea {
   resize: none;
 }
+
+.container {
+  width: 1200px;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-evenly;
+}
