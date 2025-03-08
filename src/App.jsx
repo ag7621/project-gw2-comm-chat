@@ -3,6 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import bossArray from './Data';
 
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopyText() {
+    navigator.clipboard.writeText(text);
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <button onClick={() => handleCopyText(text.entry)}>
+      {copied ? 'Copied!' : 'Copy text'}
+    </button>
+  );
+}
+
 function App() {
   const [data, setData] = useState(bossArray);
 
@@ -11,8 +28,6 @@ function App() {
   const [count, setCount] = useState(0);
 
   const [filteredList, setFilteredList] = useState('Vale Guardian');
-
-  const [copied, setCopied] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -40,13 +55,6 @@ function App() {
     setNewEntry(e.target.value);
   }
 
-  function handleCopyText(text) {
-    navigator.clipboard.writeText(text);
-
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
   function handleDelete(entryId, bossName) {
     setData((prevData) =>
       prevData.map((boss) =>
@@ -59,13 +67,6 @@ function App() {
       )
     );
   }
-
-  // useEffect(() => {
-  //   console.log('data change: ', data);
-  //   data.forEach((item) => {
-  //     console.log(item);
-  //   });
-  // }, [data]);
 
   return (
     <div className="container">
@@ -90,9 +91,7 @@ function App() {
                   <button onClick={() => handleDelete(entry.id, boss.name)}>
                     Delete
                   </button>
-                  <button onClick={() => handleCopyText(entry.entry)}>
-                    {copied ? 'Copied!' : 'Copy text'}
-                  </button>
+                  <CopyButton text={entry.entry} />
                 </li>
               ))}
             </ol>
