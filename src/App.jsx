@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import bossArray from './Data';
@@ -8,15 +8,12 @@ function CopyButton({ text }) {
 
   function handleCopyText() {
     navigator.clipboard.writeText(text);
-
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
   return (
-    <button onClick={() => handleCopyText(text.entry)}>
-      {copied ? 'Copied!' : 'Copy text'}
-    </button>
+    <button onClick={handleCopyText}>{copied ? 'Copied!' : 'Copy text'}</button>
   );
 }
 
