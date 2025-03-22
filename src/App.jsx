@@ -2,20 +2,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import bossArray from './Data';
-
-function CopyButton({ text }) {
-  const [copied, setCopied] = useState(false);
-
-  function handleCopyText() {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  return (
-    <button onClick={handleCopyText}>{copied ? 'Copied!' : 'Copy text'}</button>
-  );
-}
+import CopyButton from './Components/CopyButton';
 
 function App() {
   const [data, setData] = useState(bossArray);
