@@ -1,26 +1,16 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
 import './App.css';
 import bossArray from './Data';
 import CopyButton from './Components/CopyButton';
+import Form from './Components/Form';
 
 function App() {
   const [data, setData] = useState(bossArray);
 
-  const [selectedBoss, setSelectedBoss] = useState('Vale Guardian');
-  const [newEntry, setNewEntry] = useState('');
-  const [count, setCount] = useState(0);
-
   const [filteredList, setFilteredList] = useState('Vale Guardian');
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const newId = uuidv4();
-    const newEnter = { id: newId, entry: newEntry };
-
-    console.log(newEnter);
-
+  function handleAddEntry(selectedBoss, newEnter) {
     setData((prevData) =>
       prevData.map((boss) =>
         boss.name === selectedBoss
@@ -31,12 +21,6 @@ function App() {
           : boss
       )
     );
-    setNewEntry('');
-  }
-
-  function handleOnChange(e) {
-    setCount(e.target.value.length);
-    setNewEntry(e.target.value);
   }
 
   function handleDelete(entryId, bossName) {
@@ -85,35 +69,7 @@ function App() {
 
       <hr />
 
-      <form onSubmit={handleSubmit}>
-        <h2>
-          info to be entered: {selectedBoss} - {newEntry}
-        </h2>
-
-        <label>Boss: </label>
-        <select onChange={(e) => setSelectedBoss(e.target.value)}>
-          {data.map((boss) => (
-            <option key={boss.name} value={boss.name}>
-              {boss.name}
-            </option>
-          ))}
-        </select>
-
-        <br />
-
-        <label>Entry: </label>
-        <textarea
-          rows={4}
-          cols={50}
-          maxLength={199}
-          value={newEntry}
-          onChange={handleOnChange}
-        />
-
-        <button>Add</button>
-
-        <p>{count}/199</p>
-      </form>
+      <Form onAddEntry={handleAddEntry} bossList={data} />
     </div>
   );
 }
